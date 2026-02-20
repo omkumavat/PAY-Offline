@@ -1,8 +1,5 @@
 spring:
   datasource:
-#    url: jdbc:postgresql://ep-flat-cake-ai36cxqu-pooler.c-4.us-east-1.aws.neon.tech/payment_system?sslmode=require
-#    username: neondb_owner
-#    password: npg_ktLraj2Dp4mU
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
@@ -20,14 +17,10 @@ spring:
       max-file-size: 20MB
       max-request-size: 50MB
       file-size-threshold: 2KB
-#      max-file-count: 10
 
 server:
+  port: ${PORT:8080}   
+  address: 0.0.0.0
   tomcat:
     max-swallow-size: -1
     max-part-count: 20
-  port: 8080
-  address: 0.0.0.0
-
-
-
