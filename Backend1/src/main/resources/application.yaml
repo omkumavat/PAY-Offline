@@ -1,8 +1,11 @@
 spring:
   datasource:
-    url: jdbc:postgresql://ep-flat-cake-ai36cxqu-pooler.c-4.us-east-1.aws.neon.tech/payment_system?sslmode=require
-    username: neondb_owner
-    password: npg_ktLraj2Dp4mU
+#    url: jdbc:postgresql://ep-flat-cake-ai36cxqu-pooler.c-4.us-east-1.aws.neon.tech/payment_system?sslmode=require
+#    username: neondb_owner
+#    password: npg_ktLraj2Dp4mU
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -23,6 +26,8 @@ server:
   tomcat:
     max-swallow-size: -1
     max-part-count: 20
+  port: 8080
+  address: 0.0.0.0
 
 
 
