@@ -1,15 +1,12 @@
 # -------- BUILD STAGE --------
 FROM maven:3.9.9-eclipse-temurin-21 AS build
 
-WORKDIR /project
+WORKDIR /app
 
-# Copy entire repo
+# Copy everything from Backend1 folder
 COPY . .
 
-# Go inside Backend1 folder
-WORKDIR /project/Backend1
-
-# Build project
+# Build the project
 RUN mvn clean package -DskipTests
 
 # -------- RUNTIME STAGE --------
@@ -17,8 +14,8 @@ FROM eclipse-temurin:21-jdk-alpine
 
 WORKDIR /app
 
-# Copy jar from Backend1 target folder
-COPY --from=build /project/Backend1/target/*.jar app.jar
+# Copy jar from build stage
+COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
 
