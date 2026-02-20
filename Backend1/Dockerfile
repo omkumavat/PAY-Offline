@@ -1,5 +1,5 @@
 # -------- BUILD STAGE --------
-FROM eclipse-temurin:21-jdk-alpine AS build
+FROM maven:3.9.9-eclipse-temurin-21 AS build
 
 WORKDIR /project
 
@@ -9,11 +9,8 @@ COPY . .
 # Go inside Backend1 folder
 WORKDIR /project/Backend1
 
-# Make mvnw executable
-RUN chmod +x mvnw
-
 # Build project
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 # -------- RUNTIME STAGE --------
 FROM eclipse-temurin:21-jdk-alpine
