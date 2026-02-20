@@ -1,10 +1,18 @@
 # -------- BUILD STAGE --------
 FROM eclipse-temurin:21-jdk-alpine AS build
 
-WORKDIR /app
+WORKDIR /project
+
+# Copy entire repo
 COPY . .
-RUN chmod +x Backend1/mvnw
-WORKDIR /app/Backend1
+
+# Go inside Backend1 folder
+WORKDIR /project/Backend1
+
+# Make mvnw executable
+RUN chmod +x mvnw
+
+# Build project
 RUN ./mvnw clean package -DskipTests
 
 # -------- RUNTIME STAGE --------
@@ -12,8 +20,8 @@ FROM eclipse-temurin:21-jdk-alpine
 
 WORKDIR /app
 
-# 🔥 Correct jar path
-COPY --from=build /app/Backend1/target/*.jar app.jar
+# Copy jar from Backend1 target folder
+COPY --from=build /project/Backend1/target/*.jar app.jar
 
 EXPOSE 8080
 
