@@ -43,6 +43,8 @@ export const Login = () => {
       }
 
       console.log("Getting FCM token...");
+      console.log(import.meta.env.VITE_VAP_ID_KEY);
+      
 
       const token = await getToken(messaging, {
         vapidKey: import.meta.env.VITE_VAP_ID_KEY,
