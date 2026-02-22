@@ -15,7 +15,7 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins(
-                                "http://localhost:5173",
+                                "https://pay-offline-qr.vercel.app",
                                 "http://localhost:4173"
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
