@@ -1,8 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
-
 const AuthContext = createContext();
 
-const API_URL = "http://localhost:4000"; // change if needed
+const API_URL2 = import.meta.env.VITE_API_URL2 || "http://localhost:4000";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -46,7 +45,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setError(null);
 
-      const res = await fetch(`${API_URL}/server/user/signup`, {
+      const res = await fetch(`${API_URL2}/server/user/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, username }),
@@ -67,7 +66,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setError(null);
 
-      const res = await fetch(`${API_URL}/server/user/login`, {
+      const res = await fetch(`${API_URL2}/server/user/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

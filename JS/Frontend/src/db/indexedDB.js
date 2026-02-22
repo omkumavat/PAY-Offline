@@ -1,11 +1,15 @@
 import { openDB } from 'idb';
+// import dotenv from 'dotenv';
+// dotenv.config();
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 // import { useOnlineStatus } from '../hooks/useOnlineStatus';
 const DB_NAME = 'PayOfflineDB';
 const DB_VERSION = 1;
 const STORE_NAME = 'transactions';
 
-const API_URL = "http://localhost:8080";
 // const isOnline = useOnlineStatus();
+
 
 export const initDB = async () => {
   return openDB(DB_NAME, DB_VERSION, {

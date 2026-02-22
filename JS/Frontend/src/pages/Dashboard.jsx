@@ -142,35 +142,6 @@ export const Dashboard = ({ syncing }) => {
             Welcome back, {JSON.parse(user)?.name || 'User'}</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="card">
-            <h3 className="text-sm font-medium text-gray-500 mb-2">
-              Total Balance
-            </h3>
-            <p className="text-3xl font-bold text-gray-900">
-              ${totalBalance.toFixed(2)}
-            </p>
-          </div>
-
-          <div className="card">
-            <h3 className="text-sm font-medium text-gray-500 mb-2">
-              Total Spent
-            </h3>
-            <p className="text-3xl font-bold text-gray-900">
-              ${totalSpent.toFixed(2)}
-            </p>
-          </div>
-
-          <div className="card">
-            <h3 className="text-sm font-medium text-gray-500 mb-2">
-              Available
-            </h3>
-            <p className="text-3xl font-bold text-primary-600">
-              ${(totalBalance - totalSpent).toFixed(2)}
-            </p>
-          </div>
-        </div>
-
         <div className="card mb-8">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold text-gray-900">

@@ -1,5 +1,9 @@
 importScripts("https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/10.0.0/firebase-messaging-compat.js");
+// import env from "dotenv";
+// env.config();
+
+const API_URL = "https://pay-offline-backend1.onrender.com";
 
 firebase.initializeApp({
 //   apiKey: "YOUR_KEY",
@@ -8,7 +12,7 @@ firebase.initializeApp({
 //   messagingSenderId: "YOUR_SENDER_ID",
 //   appId: "YOUR_APP_ID"
 
-  apiKey: "AIzaSyD3ZACDb-oAbBYL5VnMhYUd5IsOxr94Cgk",
+  apiKey: "AIzaSyD3ZACDb",
   authDomain: "payments-3a454.firebaseapp.com",
   projectId: "payments-3a454",
   storageBucket: "payments-3a454.firebasestorage.app",
@@ -46,7 +50,7 @@ self.addEventListener('notificationclick', function(event) {
     console.log("txnId:", txnId);
 
   event.waitUntil(
-    fetch("http://localhost:8080/api/payments/notification-clicked", {
+    fetch(`${API_URL}/api/payments/notification-clicked`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

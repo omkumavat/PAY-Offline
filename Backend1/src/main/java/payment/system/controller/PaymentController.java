@@ -108,7 +108,9 @@ public class PaymentController {
         }
 
 
-        return ResponseEntity.ok("Token saved");
+        return ResponseEntity.ok(Map.of(
+                "success",true
+        ));
     }
 
 

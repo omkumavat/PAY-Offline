@@ -3,8 +3,12 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { messaging } from "../firebase";
 import { getToken } from "firebase/messaging";
+// import env from "dotenv";
+// env.config();
+
 
 export const Login = () => {
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -27,23 +31,66 @@ export const Login = () => {
   };
 
   const requestPermission = async () => {
+    try {
+      console.log("Requesting notification permission...");
 
-    const permission = await Notification.requestPermission();
+      const permission = await Notification.requestPermission();
+      console.log("Permission status:", permission);
 
-    if (permission === "granted") {
+      if (permission !== "granted") {
+        console.warn("Notification permission not granted.");
+        return;
+      }
+
+      console.log("Getting FCM token...");
 
       const token = await getToken(messaging, {
-        vapidKey: "BActNSANlPpTJDpMPETszvlJ0QJ9nNCda_2Efjg_uoTbS2JMWbC5Is8fj27paMH_auanqfzHIVi822gk-q9CoWU"
+        vapidKey: import.meta.env.VITE_VAP_ID_KEY,
       });
 
       console.log("FCM Token:", token);
 
-      // Send token to backend
-      await fetch("http://localhost:8080/api/payments/save-token", {
+      if (!token) {
+        console.warn("No FCM token received.");
+        return;
+      }
+
+      // Get user safely
+      const userData = localStorage.getItem("user");
+      if (!userData) {
+        console.error("User not found in localStorage.");
+        return;
+      }
+
+      const user = JSON.parse(userData);
+      console.log(user);
+      
+
+      console.log("Sending token to backend...");
+
+      const response = await fetch(`${API_URL}/api/payments/save-token`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, userId: JSON.parse(localStorage.getItem("user")).id })
+        body: JSON.stringify({
+          token,
+          userId: user.id
+        }),
       });
+
+      console.log("Response status:", response.status);
+
+      const data = await response.json();
+      console.log("Response body:", data);
+
+      if (!response.ok || data.success !== true) {
+        console.error("Backend error:", data);
+        return;
+      }
+
+      console.log("Token saved successfully ✅");
+
+    } catch (error) {
+      console.error("Error in requestPermission:", error);
     }
   };
 
