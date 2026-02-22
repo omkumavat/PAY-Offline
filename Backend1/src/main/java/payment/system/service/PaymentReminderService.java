@@ -65,24 +65,31 @@ public class PaymentReminderService {
 
 
 
-    @Scheduled(fixedRate = 100000)
+    @Scheduled(fixedRate = 10000)
     public void checkPendingTransaction() {
 
         System.out.println("Checking pending transactions...");
 
-        List<UserToken> pending =
-                tokenRepository.findAll();
+        List<UserToken> tokens = tokenRepository.findAll();
 
-        for (UserToken tn : pending) {
-//            System.out.println(txn.getRecipient());
-//            tn.findByUserId(txn.getUserId())
-//                    .ifPresent(userToken -> {
-                        try {
-                            sendWebPush(tn.getToken());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-//                    });
+        for (UserToken tn : tokens) {
+            Long userId = tn.getUserId();
+
+//            List<Transaction> all = transactionRepository.findByUserId(userId);
+//            all.forEach(t -> System.out.println("DB STATUS: " + t.getStatus()));
+
+            List<Transaction> pendingTransactions =
+                    transactionRepository.findByUserIdAndStatus(userId, "SYNCED");
+
+            System.out.println("Matched SYNCED count: " + pendingTransactions.size());
+
+            if (!pendingTransactions.isEmpty()) {
+                try {
+                    sendWebPush(tn.getToken());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
     }

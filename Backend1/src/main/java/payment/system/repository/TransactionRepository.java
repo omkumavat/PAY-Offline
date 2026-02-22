@@ -10,5 +10,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     List<Transaction> findByUserId(Long aLong);
 
+    List<Transaction> findByUserIdAndStatus(Long userId, String pending);
+
 //    TransactionRepository findByUserId();
 }
