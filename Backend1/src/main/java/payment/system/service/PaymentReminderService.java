@@ -23,7 +23,7 @@ public class PaymentReminderService {
     private TokenRepository tokenRepository;
 
 //    @Scheduled(fixedRate = 60 * 60 * 1000) // every 1 hour
-    @Scheduled(fixedRate = 100000)
+    @Scheduled(fixedRate = 60 * 60 * 1000)
     public void checkPendingPayments() {
 
         System.out.println("Checking pending payments...");
@@ -65,7 +65,7 @@ public class PaymentReminderService {
 
 
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 60 * 60 * 1000)
     public void checkPendingTransaction() {
 
         System.out.println("Checking pending transactions...");
@@ -97,7 +97,7 @@ public class PaymentReminderService {
     private void sendWebPush(String token)
             throws FirebaseMessagingException {
 
-        String webLink = "http://localhost:5173/dashboard";
+        String webLink = "https://pay-offline-qr.vercel.app/dashboard";
 
         Message message = Message.builder()
                 .setToken(token)
