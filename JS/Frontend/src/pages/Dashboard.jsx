@@ -52,12 +52,6 @@ export const Dashboard = ({ syncing }) => {
     loadTransactions();
   }, [syncing]);
 
-  // useEffect(() => {
-  //   if (isOnline) {
-  //     syncPendingTransactions();
-  //   }
-  // }, [isOnline]);
-
   const handlePayment = async (e) => {
     e.preventDefault();
 
@@ -77,13 +71,13 @@ export const Dashboard = ({ syncing }) => {
 
     await addTransaction(transaction);
 
-    if (isOnline) {
+    // if (isOnline) {
       // console.log(user.id);
       
       await syncPendingTransactions(JSON.parse(user).id);
-    } else {
-      alert('You are offline. This payment will be synced when you reconnect.');
-    }
+    // } else {
+      // alert('You are offline. This payment will be synced when you reconnect.');
+    // }
     await loadTransactions();
 
     setAmount('');
