@@ -12,7 +12,7 @@ firebase.initializeApp({
 //   messagingSenderId: "YOUR_SENDER_ID",
 //   appId: "YOUR_APP_ID"
 
-  apiKey: "AIzaSyD3ZACDb",
+  apiKey: "AIzaSyD3ZACDb-oAbBYL5VnMhYUd5IsOxr94Cgk",
   authDomain: "payments-3a454.firebaseapp.com",
   projectId: "payments-3a454",
   storageBucket: "payments-3a454.firebasestorage.app",

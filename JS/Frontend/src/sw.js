@@ -10,7 +10,7 @@ clientsClaim()
 
 // Firebase config
 const firebaseConfig = {
-  apiKey: "AIzaSyD3ZACDb",
+  apiKey: "AIzaSyD3ZACDb-oAbBYL5VnMhYUd5IsOxr94Cgk",
   authDomain: "payments-3a454.firebaseapp.com",
   projectId: "payments-3a454",
 //   storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
