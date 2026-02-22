@@ -10,18 +10,12 @@ clientsClaim()
 
 // Firebase config
 const firebaseConfig = {
-//   apiKey: "...",
-//   authDomain: "...",
-//   projectId: "...",
-//   messagingSenderId: "...",
-//   appId: "..."
-
-  apiKey: import.meta.env.VITE_API_KEY,
-  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_PROJECT_ID,
+  apiKey: "AIzaSyD3ZACDb",
+  authDomain: "payments-3a454.firebaseapp.com",
+  projectId: "payments-3a454",
 //   storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER,
-  appId: import.meta.env.VITE_APP_ID,
+  messagingSenderId: "647238495625",
+  appId: "1:647238495625:web:e4c0b433a54e057c6f0558"
 //   measurementId: "G-HSE5FMBD5S"
 }
 
