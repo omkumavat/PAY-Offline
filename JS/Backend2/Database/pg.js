@@ -10,7 +10,9 @@ const pool = new Pool({
   port: process.env.DB_PORT,
   ssl: {
     rejectUnauthorized: false
-  }
+  },
+  connectionTimeoutMillis: 15000,
+  max: 5,
 });
 
 export default pool;

@@ -11,7 +11,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 
 export const Dashboard = ({ syncing }) => {
-  const {user}=useAuth();
+  const { user } = useAuth();
   const isOnline = useOnlineStatus();
   const [transactions, setTransactions] = useState([]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -20,7 +20,7 @@ export const Dashboard = ({ syncing }) => {
   const [qrImage, setQrImage] = useState(null);
   const [qrPreview, setQrPreview] = useState(null);
   const [selectedQR, setSelectedQR] = useState(null);
-
+  const [refreshing, setRefreshing] = useState(false);
 
   const handleQrUpload = (e) => {
     const file = e.target.files[0];
@@ -38,17 +38,28 @@ export const Dashboard = ({ syncing }) => {
     ));
   };
 
+  const load = () => {
+    setRefreshing(true);
+    loadPendingTransactions(JSON.parse(user).id);
+    loadTransactions();
+    setTimeout(() => {
+    setRefreshing(false);
+  }, 500); 
+  }
+
   
+
+
   useEffect(() => {
-    if(isOnline){
-      loadPendingTransactions(JSON.parse(user).id);
-    }
+    // if (isOnline) {
+    loadPendingTransactions(JSON.parse(user).id);
+    // }
     loadTransactions();
   }, []);
 
-    useEffect(() => {
+  useEffect(() => {
     // console.log(JSON.parse(user).id);
-    
+
     loadTransactions();
   }, [syncing]);
 
@@ -65,18 +76,18 @@ export const Dashboard = ({ syncing }) => {
       recipient,
       timestamp: new Date().toISOString(),
       qrImage,
-      status : 'PENDING',
+      status: 'PENDING',
       // type: 'PAYMENT',
     };
 
     await addTransaction(transaction);
 
     // if (isOnline) {
-      // console.log(user.id);
-      
-      await syncPendingTransactions(JSON.parse(user).id);
+    // console.log(user.id);
+
+    await syncPendingTransactions(JSON.parse(user).id);
     // } else {
-      // alert('You are offline. This payment will be synced when you reconnect.');
+    // alert('You are offline. This payment will be synced when you reconnect.');
     // }
     await loadTransactions();
 
@@ -94,21 +105,21 @@ export const Dashboard = ({ syncing }) => {
       );
     }
     if (status === 'PENDING') {
-    return (
-      <span className="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
-        Pending
-      </span>
-    );
-  }
+      return (
+        <span className="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+          Pending
+        </span>
+      );
+    }
 
-  if (status === 'SUCCESS') {
+    if (status === 'SUCCESS') {
       return (
         <span className="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
           Success
         </span>
       );
     }
- 
+
   };
 
   const formatDate = (dateString) => {
@@ -141,6 +152,26 @@ export const Dashboard = ({ syncing }) => {
             <h2 className="text-xl font-bold text-gray-900">
               Recent Transactions
             </h2>
+            <button
+              onClick={load}
+              disabled={refreshing}
+              className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition"
+              title="Refresh Transactions"
+            >
+              <svg
+                className={`w-5 h-5 text-gray-700 ${refreshing ? "animate-spin" : ""}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 4v5h.582M20 20v-5h-.581M5.17 9A7 7 0 0119 8m-1.17 7A7 7 0 015 16"
+                />
+              </svg>
+            </button>
             <button
               onClick={() => setShowPaymentModal(true)}
               className="btn-primary"

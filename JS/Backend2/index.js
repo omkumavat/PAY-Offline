@@ -18,8 +18,11 @@ app.use('/server',User);
 
 app.get("/", async (req, res) => {
   try {
-    const result = await pool.query("SELECT NOW()");
-    res.json({ time: result.rows[0] });
+    const result = await pool.query(
+        "SELECT * FROM users WHERE email = $1",
+        ["om@gmail.com"]
+      );
+    res.json({ result });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Database error" });

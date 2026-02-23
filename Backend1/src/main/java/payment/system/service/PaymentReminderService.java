@@ -23,7 +23,7 @@ public class PaymentReminderService {
     private TokenRepository tokenRepository;
 
 //    @Scheduled(fixedRate = 60 * 60 * 1000) // every 1 hour
-    @Scheduled(fixedRate = 60 * 60 * 1000)
+    @Scheduled(fixedRate =  10000)
     public void checkPendingPayments() {
 
         System.out.println("Checking pending payments...");
@@ -65,7 +65,7 @@ public class PaymentReminderService {
 
 
 
-    @Scheduled(fixedRate = 60 * 60 * 1000)
+    @Scheduled(fixedRate = 10000)
     public void checkPendingTransaction() {
 
         System.out.println("Checking pending transactions...");

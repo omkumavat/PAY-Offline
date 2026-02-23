@@ -143,6 +143,7 @@ public class PaymentController {
     public ResponseEntity<?> handleClick(@RequestBody Map<String, String> body) {
 
         String txnId = body.get("txnId");
+        System.out.println(txnId);
         if(txnId==null) return ResponseEntity.ok("Recorded");
         System.out.println("clicked"+10);
 
