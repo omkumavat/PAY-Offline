@@ -270,7 +270,7 @@ export const Dashboard = ({ syncing }) => {
                           onClick={() => handlePAy(transaction?.qUrl)}
                           className="text-green-600 hover:text-green-800 underline text-sm"
                         >
-                          Pay
+                          PAy
                         </button>
                       </td>
                     </tr>
