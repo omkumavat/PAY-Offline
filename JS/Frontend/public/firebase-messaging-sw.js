@@ -6,11 +6,11 @@ importScripts("https://www.gstatic.com/firebasejs/10.0.0/firebase-messaging-comp
 const API_URL = "https://pay-offline-backend1.onrender.com";
 
 firebase.initializeApp({
-//   apiKey: "YOUR_KEY",
-//   authDomain: "YOUR_DOMAIN",
-//   projectId: "YOUR_ID",
-//   messagingSenderId: "YOUR_SENDER_ID",
-//   appId: "YOUR_APP_ID"
+  //   apiKey: "YOUR_KEY",
+  //   authDomain: "YOUR_DOMAIN",
+  //   projectId: "YOUR_ID",
+  //   messagingSenderId: "YOUR_SENDER_ID",
+  //   appId: "YOUR_APP_ID"
 
   apiKey: "AIzaSyD3ZACDb-oAbBYL5VnMhYUd5IsOxr94Cgk",
   authDomain: "payments-3a454.firebaseapp.com",
@@ -24,7 +24,7 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage(function(payload) {
+messaging.onBackgroundMessage(function (payload) {
 
   const title = payload.data.title;
   const txnId = payload.data.txnId;
@@ -32,7 +32,7 @@ messaging.onBackgroundMessage(function(payload) {
   const upiLink = payload.data.upiLink;
 
   console.log(upiLink);
-  
+
 
   self.registration.showNotification(title, {
     body: body,
@@ -41,13 +41,13 @@ messaging.onBackgroundMessage(function(payload) {
 });
 
 
-self.addEventListener('notificationclick', function(event) {
+self.addEventListener('notificationclick', function (event) {
   event.notification.close();
 
   const upiLink = event.notification.data?.upiLink;
   const txnId = event.notification.data?.txnId;
 
-    console.log("txnId:", txnId);
+  console.log("txnId:", txnId);
 
   event.waitUntil(
     fetch(`${API_URL}/api/payments/notification-clicked`, {
@@ -59,12 +59,15 @@ self.addEventListener('notificationclick', function(event) {
         txnId: txnId
       })
     })
-    .then(() => {
-      return clients.openWindow(upiLink);
-    })
-    .catch(err => {
-      console.error("API failed:", err);
-      return clients.openWindow(upiLink);
-    })
+      .then(() => {
+        // return clients.openWindow(upiLink);
+        return clients.openWindow(
+          `https://pay-offline-qr.vercel.app/dashboard?txnId=${txnId}`
+        );
+      })
+      .catch(err => {
+        console.error("API failed:", err);
+        return clients.openWindow(upiLink);
+      })
   );
 });

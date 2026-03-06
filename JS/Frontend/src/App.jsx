@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { Navbar } from "./components/Navbar";
 import { Home } from "./pages/Home";
 import { Dashboard } from "./pages/Dashboard";
@@ -10,6 +10,7 @@ import { PublicRoute } from "./Route/PublicRoute";
 import { ProtectedRoute } from "./Route/ProtectedRoute";
 import { deleteAllTransactions, syncPendingTransactions } from "./db/indexedDB";
 import { useOnlineStatus } from "./hooks/useOnlineStatus";
+import { Pay } from "./pages/Pay";
 
 function App() {
   const { user } = useAuth();
@@ -22,7 +23,7 @@ function App() {
   useEffect(() => {
     const trySync = async () => {
       // if (!user?.id) return;
-      if(!(JSON.parse(user).id)) return;
+      if (!(JSON.parse(user).id)) return;
 
       try {
         console.log("Trying sync...");
@@ -95,7 +96,20 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+          path="/pay"
+          element={
+            <ProtectedRoute>
+              <>
+                <Pay />
+              </>
+            </ProtectedRoute>
+          }
+        />
         </Routes>
+
+    
       </div>
     </Router>
   );

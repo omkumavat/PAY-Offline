@@ -21,6 +21,7 @@ export const Dashboard = ({ syncing }) => {
   const [qrPreview, setQrPreview] = useState(null);
   const [selectedQR, setSelectedQR] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleQrUpload = (e) => {
     const file = e.target.files[0];
@@ -33,6 +34,8 @@ export const Dashboard = ({ syncing }) => {
 
   const loadTransactions = async () => {
     const allTransactions = await getAllTransactions();
+    // console.log(allTransactions);
+
     setTransactions(allTransactions.sort((a, b) =>
       new Date(b.timestamp) - new Date(a.timestamp)
     ));
@@ -43,12 +46,9 @@ export const Dashboard = ({ syncing }) => {
     loadPendingTransactions(JSON.parse(user).id);
     loadTransactions();
     setTimeout(() => {
-    setRefreshing(false);
-  }, 500); 
+      setRefreshing(false);
+    }, 500);
   }
-
-  
-
 
   useEffect(() => {
     // if (isOnline) {
@@ -64,6 +64,7 @@ export const Dashboard = ({ syncing }) => {
   }, [syncing]);
 
   const handlePayment = async (e) => {
+    setLoading(true);
     e.preventDefault();
 
     if (!amount || !recipient || !qrImage) {
@@ -94,6 +95,7 @@ export const Dashboard = ({ syncing }) => {
     setAmount('');
     setRecipient('');
     setShowPaymentModal(false);
+    setLoading(false);
   };
 
   const getStatusBadge = (status) => {
@@ -121,6 +123,10 @@ export const Dashboard = ({ syncing }) => {
     }
 
   };
+
+  const handlePAy = (url) => {
+    window.location.href = url;
+  }
 
   const formatDate = (dateString) => {
     if (!dateString) return 'Invalid Date';
@@ -220,6 +226,9 @@ export const Dashboard = ({ syncing }) => {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Status
                     </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -254,6 +263,15 @@ export const Dashboard = ({ syncing }) => {
 
                       <td className="px-6 py-4 whitespace-nowrap">
                         {getStatusBadge(transaction.status)}
+                      </td>
+
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <button
+                          onClick={() => handlePAy(transaction?.qUrl)}
+                          className="text-green-600 hover:text-green-800 underline text-sm"
+                        >
+                          Pay
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -415,13 +433,14 @@ export const Dashboard = ({ syncing }) => {
 
               <div className="flex space-x-3 mt-6">
                 <button
+                  disabled={loading}
                   type="button"
                   onClick={() => setShowPaymentModal(false)}
                   className="flex-1 btn-secondary"
                 >
                   Cancel
                 </button>
-                <button type="submit" className="flex-1 btn-primary">
+                <button type="submit" disabled={loading} className="flex-1 btn-primary">
                   Send Payment
                 </button>
               </div>

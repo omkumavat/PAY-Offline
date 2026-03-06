@@ -10,7 +10,8 @@ import payment.system.model.Transaction;
 import payment.system.model.UserToken;
 import payment.system.repository.TokenRepository;
 import payment.system.repository.TransactionRepository;
-
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Service
@@ -23,7 +24,7 @@ public class PaymentReminderService {
     private TokenRepository tokenRepository;
 
 //    @Scheduled(fixedRate = 60 * 60 * 1000) // every 1 hour
-    @Scheduled(fixedRate =  10000)
+    @Scheduled(fixedRate =  30*60*1000)
     public void checkPendingPayments() {
 
         System.out.println("Checking pending payments...");
@@ -48,9 +49,9 @@ public class PaymentReminderService {
     private void sendPush(String token, Transaction txn)
             throws FirebaseMessagingException {
 
-        String upiLink = txn.getQr_url()
-                + "&am=" + txn.getAmount()
-                + "&cu=INR";
+        String upiLink =
+                "https://pay-offline-qr.vercel.app/pay?upi=" +
+                        URLEncoder.encode(txn.getQr_url(), StandardCharsets.UTF_8);
 
         Message message = Message.builder()
                 .setToken(token)
@@ -65,7 +66,7 @@ public class PaymentReminderService {
 
 
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 30*60*1000)
     public void checkPendingTransaction() {
 
         System.out.println("Checking pending transactions...");

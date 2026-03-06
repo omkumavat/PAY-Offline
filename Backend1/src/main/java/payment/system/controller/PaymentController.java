@@ -170,4 +170,12 @@ public class PaymentController {
         return ResponseEntity.ok(txn);
     }
 
+    @DeleteMapping("/delete-token")
+    public ResponseEntity<?> deleteToken(@RequestParam Long id) {
+
+        tokenRepository.deleteTokenByUserId(id);
+
+        return ResponseEntity.ok("Token deleted successfully");
+    }
+
 }

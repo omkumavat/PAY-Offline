@@ -1,9 +1,31 @@
 import { Link } from 'react-router-dom';
 import { OfflineBadge } from './OfflineBadge';
+import { useAuth } from '../context/AuthContext';
 
+const API_URL = import.meta.env.VITE_APP_API_URL || "http://localhost:8080";
 export const Navbar = () => {
 
+  const {user} = useAuth();
+
+  const removeToken = async (id) => {
+    try {
+
+      const response = await fetch(`${API_URL}/api/payments/delete-token?id=${id}`, {
+        method: "DELETE"
+      });
+
+      if (!response.ok) {
+        throw new Error("Sync failed");
+      }
+
+
+    } catch (error) {
+      console.error("Sync error:", error);
+    }
+  }
+  
   const handleLogOut = () => {
+    removeToken(JSON.parse(user).id);
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     window.location.href = "/";
@@ -23,10 +45,10 @@ export const Navbar = () => {
 
           <div className="flex items-center space-x-4">
             <OfflineBadge />
-            <button 
-            className="text-gray-700 hover:text-primary-600 font-medium 
+            <button
+              className="text-gray-700 hover:text-primary-600 font-medium 
             transition-colors duration-200"
-            onClick={handleLogOut}>
+              onClick={handleLogOut}>
               Logout
             </button>
             {/* <Link

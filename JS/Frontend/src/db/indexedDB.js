@@ -116,7 +116,7 @@ export const loadPendingTransactions = async (user_id) => {
     const tx = db.transaction(STORE_NAME, "readwrite");
     const store = tx.objectStore(STORE_NAME);
 
-    console.log(await store.getAll());
+    // console.log(await store.getAll());
     
 
     for (const serverTx of pending) {
@@ -128,13 +128,15 @@ export const loadPendingTransactions = async (user_id) => {
       
 
       if (localTx) {
+        // localTx.qUrl = serverTx.qr_url || null;
         // console.log(serverTx);
         localTx.status = serverTx.status; // Update status
         await store.put(localTx);
       }else{
         // If not exists, add to IndexedDB
         await store.add({
-      
+          
+          qUrl: serverTx.qr_url || null,
           id: serverTx.indexId || null, // Use server's indexId as local id
           recipient: serverTx.recipient,
           amount: serverTx.amount,
